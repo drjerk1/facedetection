@@ -1,5 +1,5 @@
 # facedetection
-Realtime CPU face detection using YOLOv2 algorithm with openvino and tensorflow support
+Realtime CPU face detection using YOLOv2 algorithm with Intel OpenVino and Tensorflow support
 
 Bunch of models pretrained on WIDER Face dataset provided
 
