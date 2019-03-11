@@ -135,8 +135,7 @@ class FaceDetection():
             raise ValueError(invalid_shot_name)
 
         self.grids = self.image_size // reduction_rate
-
-        self.model = create_model(self.inferencer, self.model_name, self.image_size, self.model_alpha, self.model_precision, self.inference_device, len(self.shots), self.grids)
+        self.model = create_model(self.inferencer, self.model_name, self.image_size, self.model_alpha, self.model_precision, self.inference_device, len(self.shots['shots']), self.grids)
 
     def detect(self, frame):
         original_frame_shape = frame.shape
