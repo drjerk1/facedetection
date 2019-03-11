@@ -1,0 +1,859 @@
+<?xml version="1.0" ?>
+<net batch="1" name="frozen_model" version="4">
+	<layers>
+		<layer id="0" name="input_1" precision="FP32" type="Input">
+			<output>
+				<port id="0">
+					<dim>1</dim>
+					<dim>3</dim>
+					<dim>224</dim>
+					<dim>224</dim>
+				</port>
+			</output>
+		</layer>
+		<layer id="1" name="conv2d/Conv2D" precision="FP32" type="Convolution">
+			<data auto_pad="valid" dilations="1,1" group="1" kernel="3,3" output="16" pads_begin="0,0" pads_end="0,0" strides="2,2"/>
+			<input>
+				<port id="0">
+					<dim>1</dim>
+					<dim>3</dim>
+					<dim>224</dim>
+					<dim>224</dim>
+				</port>
+			</input>
+			<output>
+				<port id="3">
+					<dim>1</dim>
+					<dim>16</dim>
+					<dim>111</dim>
+					<dim>111</dim>
+				</port>
+			</output>
+			<blobs>
+				<weights offset="0" size="1728"/>
+				<biases offset="1728" size="64"/>
+			</blobs>
+		</layer>
+		<layer id="2" name="LeakyReLU_1174" precision="FP32" type="ReLU">
+			<data negative_slope="0.10000000149011612"/>
+			<input>
+				<port id="0">
+					<dim>1</dim>
+					<dim>16</dim>
+					<dim>111</dim>
+					<dim>111</dim>
+				</port>
+			</input>
+			<output>
+				<port id="1">
+					<dim>1</dim>
+					<dim>16</dim>
+					<dim>111</dim>
+					<dim>111</dim>
+				</port>
+			</output>
+		</layer>
+		<layer id="3" name="depthwise_conv2d/depthwise" precision="FP32" type="Convolution">
+			<data dilations="1,1" group="16" kernel="3,3" output="16" pads_begin="1,1" pads_end="1,1" strides="2,2"/>
+			<input>
+				<port id="0">
+					<dim>1</dim>
+					<dim>16</dim>
+					<dim>111</dim>
+					<dim>111</dim>
+				</port>
+			</input>
+			<output>
+				<port id="3">
+					<dim>1</dim>
+					<dim>16</dim>
+					<dim>56</dim>
+					<dim>56</dim>
+				</port>
+			</output>
+			<blobs>
+				<weights offset="1792" size="576"/>
+				<biases offset="2368" size="64"/>
+			</blobs>
+		</layer>
+		<layer id="4" name="conv2d_1/Conv2D" precision="FP32" type="Convolution">
+			<data auto_pad="valid" dilations="1,1" group="1" kernel="1,1" output="32" pads_begin="0,0" pads_end="0,0" strides="1,1"/>
+			<input>
+				<port id="0">
+					<dim>1</dim>
+					<dim>16</dim>
+					<dim>56</dim>
+					<dim>56</dim>
+				</port>
+			</input>
+			<output>
+				<port id="3">
+					<dim>1</dim>
+					<dim>32</dim>
+					<dim>56</dim>
+					<dim>56</dim>
+				</port>
+			</output>
+			<blobs>
+				<weights offset="2432" size="2048"/>
+				<biases offset="4480" size="128"/>
+			</blobs>
+		</layer>
+		<layer id="5" name="LeakyReLU_1177" precision="FP32" type="ReLU">
+			<data negative_slope="0.10000000149011612"/>
+			<input>
+				<port id="0">
+					<dim>1</dim>
+					<dim>32</dim>
+					<dim>56</dim>
+					<dim>56</dim>
+				</port>
+			</input>
+			<output>
+				<port id="1">
+					<dim>1</dim>
+					<dim>32</dim>
+					<dim>56</dim>
+					<dim>56</dim>
+				</port>
+			</output>
+		</layer>
+		<layer id="6" name="depthwise_conv2d_1/depthwise" precision="FP32" type="Convolution">
+			<data dilations="1,1" group="32" kernel="3,3" output="32" pads_begin="1,1" pads_end="1,1" strides="2,2"/>
+			<input>
+				<port id="0">
+					<dim>1</dim>
+					<dim>32</dim>
+					<dim>56</dim>
+					<dim>56</dim>
+				</port>
+			</input>
+			<output>
+				<port id="3">
+					<dim>1</dim>
+					<dim>32</dim>
+					<dim>28</dim>
+					<dim>28</dim>
+				</port>
+			</output>
+			<blobs>
+				<weights offset="4608" size="1152"/>
+				<biases offset="5760" size="128"/>
+			</blobs>
+		</layer>
+		<layer id="7" name="conv2d_2/Conv2D" precision="FP32" type="Convolution">
+			<data auto_pad="valid" dilations="1,1" group="1" kernel="1,1" output="64" pads_begin="0,0" pads_end="0,0" strides="1,1"/>
+			<input>
+				<port id="0">
+					<dim>1</dim>
+					<dim>32</dim>
+					<dim>28</dim>
+					<dim>28</dim>
+				</port>
+			</input>
+			<output>
+				<port id="3">
+					<dim>1</dim>
+					<dim>64</dim>
+					<dim>28</dim>
+					<dim>28</dim>
+				</port>
+			</output>
+			<blobs>
+				<weights offset="5888" size="8192"/>
+				<biases offset="14080" size="256"/>
+			</blobs>
+		</layer>
+		<layer id="8" name="LeakyReLU_1181" precision="FP32" type="ReLU">
+			<data negative_slope="0.10000000149011612"/>
+			<input>
+				<port id="0">
+					<dim>1</dim>
+					<dim>64</dim>
+					<dim>28</dim>
+					<dim>28</dim>
+				</port>
+			</input>
+			<output>
+				<port id="1">
+					<dim>1</dim>
+					<dim>64</dim>
+					<dim>28</dim>
+					<dim>28</dim>
+				</port>
+			</output>
+		</layer>
+		<layer id="9" name="depthwise_conv2d_2/depthwise" precision="FP32" type="Convolution">
+			<data dilations="1,1" group="64" kernel="3,3" output="64" pads_begin="1,1" pads_end="1,1" strides="1,1"/>
+			<input>
+				<port id="0">
+					<dim>1</dim>
+					<dim>64</dim>
+					<dim>28</dim>
+					<dim>28</dim>
+				</port>
+			</input>
+			<output>
+				<port id="3">
+					<dim>1</dim>
+					<dim>64</dim>
+					<dim>28</dim>
+					<dim>28</dim>
+				</port>
+			</output>
+			<blobs>
+				<weights offset="14336" size="2304"/>
+				<biases offset="16640" size="256"/>
+			</blobs>
+		</layer>
+		<layer id="10" name="conv2d_3/Conv2D" precision="FP32" type="Convolution">
+			<data auto_pad="valid" dilations="1,1" group="1" kernel="1,1" output="64" pads_begin="0,0" pads_end="0,0" strides="1,1"/>
+			<input>
+				<port id="0">
+					<dim>1</dim>
+					<dim>64</dim>
+					<dim>28</dim>
+					<dim>28</dim>
+				</port>
+			</input>
+			<output>
+				<port id="3">
+					<dim>1</dim>
+					<dim>64</dim>
+					<dim>28</dim>
+					<dim>28</dim>
+				</port>
+			</output>
+			<blobs>
+				<weights offset="16896" size="16384"/>
+				<biases offset="33280" size="256"/>
+			</blobs>
+		</layer>
+		<layer id="11" name="LeakyReLU_1179" precision="FP32" type="ReLU">
+			<data negative_slope="0.10000000149011612"/>
+			<input>
+				<port id="0">
+					<dim>1</dim>
+					<dim>64</dim>
+					<dim>28</dim>
+					<dim>28</dim>
+				</port>
+			</input>
+			<output>
+				<port id="1">
+					<dim>1</dim>
+					<dim>64</dim>
+					<dim>28</dim>
+					<dim>28</dim>
+				</port>
+			</output>
+		</layer>
+		<layer id="12" name="depthwise_conv2d_3/depthwise" precision="FP32" type="Convolution">
+			<data dilations="1,1" group="64" kernel="3,3" output="64" pads_begin="1,1" pads_end="1,1" strides="2,2"/>
+			<input>
+				<port id="0">
+					<dim>1</dim>
+					<dim>64</dim>
+					<dim>28</dim>
+					<dim>28</dim>
+				</port>
+			</input>
+			<output>
+				<port id="3">
+					<dim>1</dim>
+					<dim>64</dim>
+					<dim>14</dim>
+					<dim>14</dim>
+				</port>
+			</output>
+			<blobs>
+				<weights offset="33536" size="2304"/>
+				<biases offset="35840" size="256"/>
+			</blobs>
+		</layer>
+		<layer id="13" name="conv2d_4/Conv2D" precision="FP32" type="Convolution">
+			<data auto_pad="valid" dilations="1,1" group="1" kernel="1,1" output="128" pads_begin="0,0" pads_end="0,0" strides="1,1"/>
+			<input>
+				<port id="0">
+					<dim>1</dim>
+					<dim>64</dim>
+					<dim>14</dim>
+					<dim>14</dim>
+				</port>
+			</input>
+			<output>
+				<port id="3">
+					<dim>1</dim>
+					<dim>128</dim>
+					<dim>14</dim>
+					<dim>14</dim>
+				</port>
+			</output>
+			<blobs>
+				<weights offset="36096" size="32768"/>
+				<biases offset="68864" size="512"/>
+			</blobs>
+		</layer>
+		<layer id="14" name="LeakyReLU_1182" precision="FP32" type="ReLU">
+			<data negative_slope="0.10000000149011612"/>
+			<input>
+				<port id="0">
+					<dim>1</dim>
+					<dim>128</dim>
+					<dim>14</dim>
+					<dim>14</dim>
+				</port>
+			</input>
+			<output>
+				<port id="1">
+					<dim>1</dim>
+					<dim>128</dim>
+					<dim>14</dim>
+					<dim>14</dim>
+				</port>
+			</output>
+		</layer>
+		<layer id="15" name="depthwise_conv2d_4/depthwise" precision="FP32" type="Convolution">
+			<data dilations="1,1" group="128" kernel="3,3" output="128" pads_begin="1,1" pads_end="1,1" strides="1,1"/>
+			<input>
+				<port id="0">
+					<dim>1</dim>
+					<dim>128</dim>
+					<dim>14</dim>
+					<dim>14</dim>
+				</port>
+			</input>
+			<output>
+				<port id="3">
+					<dim>1</dim>
+					<dim>128</dim>
+					<dim>14</dim>
+					<dim>14</dim>
+				</port>
+			</output>
+			<blobs>
+				<weights offset="69376" size="4608"/>
+				<biases offset="73984" size="512"/>
+			</blobs>
+		</layer>
+		<layer id="16" name="conv2d_5/Conv2D" precision="FP32" type="Convolution">
+			<data auto_pad="valid" dilations="1,1" group="1" kernel="1,1" output="128" pads_begin="0,0" pads_end="0,0" strides="1,1"/>
+			<input>
+				<port id="0">
+					<dim>1</dim>
+					<dim>128</dim>
+					<dim>14</dim>
+					<dim>14</dim>
+				</port>
+			</input>
+			<output>
+				<port id="3">
+					<dim>1</dim>
+					<dim>128</dim>
+					<dim>14</dim>
+					<dim>14</dim>
+				</port>
+			</output>
+			<blobs>
+				<weights offset="74496" size="65536"/>
+				<biases offset="140032" size="512"/>
+			</blobs>
+		</layer>
+		<layer id="17" name="LeakyReLU_1175" precision="FP32" type="ReLU">
+			<data negative_slope="0.10000000149011612"/>
+			<input>
+				<port id="0">
+					<dim>1</dim>
+					<dim>128</dim>
+					<dim>14</dim>
+					<dim>14</dim>
+				</port>
+			</input>
+			<output>
+				<port id="1">
+					<dim>1</dim>
+					<dim>128</dim>
+					<dim>14</dim>
+					<dim>14</dim>
+				</port>
+			</output>
+		</layer>
+		<layer id="18" name="depthwise_conv2d_5/depthwise" precision="FP32" type="Convolution">
+			<data dilations="1,1" group="128" kernel="3,3" output="128" pads_begin="1,1" pads_end="1,1" strides="2,2"/>
+			<input>
+				<port id="0">
+					<dim>1</dim>
+					<dim>128</dim>
+					<dim>14</dim>
+					<dim>14</dim>
+				</port>
+			</input>
+			<output>
+				<port id="3">
+					<dim>1</dim>
+					<dim>128</dim>
+					<dim>7</dim>
+					<dim>7</dim>
+				</port>
+			</output>
+			<blobs>
+				<weights offset="140544" size="4608"/>
+				<biases offset="145152" size="512"/>
+			</blobs>
+		</layer>
+		<layer id="19" name="conv2d_6/Conv2D" precision="FP32" type="Convolution">
+			<data auto_pad="valid" dilations="1,1" group="1" kernel="1,1" output="256" pads_begin="0,0" pads_end="0,0" strides="1,1"/>
+			<input>
+				<port id="0">
+					<dim>1</dim>
+					<dim>128</dim>
+					<dim>7</dim>
+					<dim>7</dim>
+				</port>
+			</input>
+			<output>
+				<port id="3">
+					<dim>1</dim>
+					<dim>256</dim>
+					<dim>7</dim>
+					<dim>7</dim>
+				</port>
+			</output>
+			<blobs>
+				<weights offset="145664" size="131072"/>
+				<biases offset="276736" size="1024"/>
+			</blobs>
+		</layer>
+		<layer id="20" name="LeakyReLU_1180" precision="FP32" type="ReLU">
+			<data negative_slope="0.10000000149011612"/>
+			<input>
+				<port id="0">
+					<dim>1</dim>
+					<dim>256</dim>
+					<dim>7</dim>
+					<dim>7</dim>
+				</port>
+			</input>
+			<output>
+				<port id="1">
+					<dim>1</dim>
+					<dim>256</dim>
+					<dim>7</dim>
+					<dim>7</dim>
+				</port>
+			</output>
+		</layer>
+		<layer id="21" name="depthwise_conv2d_6/depthwise" precision="FP32" type="Convolution">
+			<data dilations="1,1" group="256" kernel="3,3" output="256" pads_begin="1,1" pads_end="1,1" strides="1,1"/>
+			<input>
+				<port id="0">
+					<dim>1</dim>
+					<dim>256</dim>
+					<dim>7</dim>
+					<dim>7</dim>
+				</port>
+			</input>
+			<output>
+				<port id="3">
+					<dim>1</dim>
+					<dim>256</dim>
+					<dim>7</dim>
+					<dim>7</dim>
+				</port>
+			</output>
+			<blobs>
+				<weights offset="277760" size="9216"/>
+				<biases offset="286976" size="1024"/>
+			</blobs>
+		</layer>
+		<layer id="22" name="conv2d_7/Conv2D" precision="FP32" type="Convolution">
+			<data auto_pad="valid" dilations="1,1" group="1" kernel="1,1" output="256" pads_begin="0,0" pads_end="0,0" strides="1,1"/>
+			<input>
+				<port id="0">
+					<dim>1</dim>
+					<dim>256</dim>
+					<dim>7</dim>
+					<dim>7</dim>
+				</port>
+			</input>
+			<output>
+				<port id="3">
+					<dim>1</dim>
+					<dim>256</dim>
+					<dim>7</dim>
+					<dim>7</dim>
+				</port>
+			</output>
+			<blobs>
+				<weights offset="288000" size="262144"/>
+				<biases offset="550144" size="1024"/>
+			</blobs>
+		</layer>
+		<layer id="23" name="LeakyReLU_1178" precision="FP32" type="ReLU">
+			<data negative_slope="0.10000000149011612"/>
+			<input>
+				<port id="0">
+					<dim>1</dim>
+					<dim>256</dim>
+					<dim>7</dim>
+					<dim>7</dim>
+				</port>
+			</input>
+			<output>
+				<port id="1">
+					<dim>1</dim>
+					<dim>256</dim>
+					<dim>7</dim>
+					<dim>7</dim>
+				</port>
+			</output>
+		</layer>
+		<layer id="24" name="depthwise_conv2d_7/depthwise" precision="FP32" type="Convolution">
+			<data dilations="1,1" group="256" kernel="3,3" output="256" pads_begin="1,1" pads_end="1,1" strides="1,1"/>
+			<input>
+				<port id="0">
+					<dim>1</dim>
+					<dim>256</dim>
+					<dim>7</dim>
+					<dim>7</dim>
+				</port>
+			</input>
+			<output>
+				<port id="3">
+					<dim>1</dim>
+					<dim>256</dim>
+					<dim>7</dim>
+					<dim>7</dim>
+				</port>
+			</output>
+			<blobs>
+				<weights offset="551168" size="9216"/>
+				<biases offset="560384" size="1024"/>
+			</blobs>
+		</layer>
+		<layer id="25" name="conv2d_8/Conv2D" precision="FP32" type="Convolution">
+			<data auto_pad="valid" dilations="1,1" group="1" kernel="1,1" output="256" pads_begin="0,0" pads_end="0,0" strides="1,1"/>
+			<input>
+				<port id="0">
+					<dim>1</dim>
+					<dim>256</dim>
+					<dim>7</dim>
+					<dim>7</dim>
+				</port>
+			</input>
+			<output>
+				<port id="3">
+					<dim>1</dim>
+					<dim>256</dim>
+					<dim>7</dim>
+					<dim>7</dim>
+				</port>
+			</output>
+			<blobs>
+				<weights offset="561408" size="262144"/>
+				<biases offset="823552" size="1024"/>
+			</blobs>
+		</layer>
+		<layer id="26" name="LeakyReLU_1183" precision="FP32" type="ReLU">
+			<data negative_slope="0.10000000149011612"/>
+			<input>
+				<port id="0">
+					<dim>1</dim>
+					<dim>256</dim>
+					<dim>7</dim>
+					<dim>7</dim>
+				</port>
+			</input>
+			<output>
+				<port id="1">
+					<dim>1</dim>
+					<dim>256</dim>
+					<dim>7</dim>
+					<dim>7</dim>
+				</port>
+			</output>
+		</layer>
+		<layer id="27" name="depthwise_conv2d_8/depthwise" precision="FP32" type="Convolution">
+			<data dilations="1,1" group="256" kernel="3,3" output="256" pads_begin="1,1" pads_end="1,1" strides="1,1"/>
+			<input>
+				<port id="0">
+					<dim>1</dim>
+					<dim>256</dim>
+					<dim>7</dim>
+					<dim>7</dim>
+				</port>
+			</input>
+			<output>
+				<port id="3">
+					<dim>1</dim>
+					<dim>256</dim>
+					<dim>7</dim>
+					<dim>7</dim>
+				</port>
+			</output>
+			<blobs>
+				<weights offset="824576" size="9216"/>
+				<biases offset="833792" size="1024"/>
+			</blobs>
+		</layer>
+		<layer id="28" name="conv2d_9/Conv2D" precision="FP32" type="Convolution">
+			<data auto_pad="valid" dilations="1,1" group="1" kernel="1,1" output="256" pads_begin="0,0" pads_end="0,0" strides="1,1"/>
+			<input>
+				<port id="0">
+					<dim>1</dim>
+					<dim>256</dim>
+					<dim>7</dim>
+					<dim>7</dim>
+				</port>
+			</input>
+			<output>
+				<port id="3">
+					<dim>1</dim>
+					<dim>256</dim>
+					<dim>7</dim>
+					<dim>7</dim>
+				</port>
+			</output>
+			<blobs>
+				<weights offset="834816" size="262144"/>
+				<biases offset="1096960" size="1024"/>
+			</blobs>
+		</layer>
+		<layer id="29" name="LeakyReLU_1176" precision="FP32" type="ReLU">
+			<data negative_slope="0.10000000149011612"/>
+			<input>
+				<port id="0">
+					<dim>1</dim>
+					<dim>256</dim>
+					<dim>7</dim>
+					<dim>7</dim>
+				</port>
+			</input>
+			<output>
+				<port id="1">
+					<dim>1</dim>
+					<dim>256</dim>
+					<dim>7</dim>
+					<dim>7</dim>
+				</port>
+			</output>
+		</layer>
+		<layer id="30" name="depthwise_conv2d_9/depthwise" precision="FP32" type="Convolution">
+			<data dilations="1,1" group="256" kernel="3,3" output="256" pads_begin="1,1" pads_end="1,1" strides="1,1"/>
+			<input>
+				<port id="0">
+					<dim>1</dim>
+					<dim>256</dim>
+					<dim>7</dim>
+					<dim>7</dim>
+				</port>
+			</input>
+			<output>
+				<port id="3">
+					<dim>1</dim>
+					<dim>256</dim>
+					<dim>7</dim>
+					<dim>7</dim>
+				</port>
+			</output>
+			<blobs>
+				<weights offset="1097984" size="9216"/>
+				<biases offset="1107200" size="1024"/>
+			</blobs>
+		</layer>
+		<layer id="31" name="conv2d_10/Conv2D" precision="FP32" type="Convolution">
+			<data auto_pad="valid" dilations="1,1" group="1" kernel="1,1" output="256" pads_begin="0,0" pads_end="0,0" strides="1,1"/>
+			<input>
+				<port id="0">
+					<dim>1</dim>
+					<dim>256</dim>
+					<dim>7</dim>
+					<dim>7</dim>
+				</port>
+			</input>
+			<output>
+				<port id="3">
+					<dim>1</dim>
+					<dim>256</dim>
+					<dim>7</dim>
+					<dim>7</dim>
+				</port>
+			</output>
+			<blobs>
+				<weights offset="1108224" size="262144"/>
+				<biases offset="1370368" size="1024"/>
+			</blobs>
+		</layer>
+		<layer id="32" name="LeakyReLU_1173" precision="FP32" type="ReLU">
+			<data negative_slope="0.10000000149011612"/>
+			<input>
+				<port id="0">
+					<dim>1</dim>
+					<dim>256</dim>
+					<dim>7</dim>
+					<dim>7</dim>
+				</port>
+			</input>
+			<output>
+				<port id="1">
+					<dim>1</dim>
+					<dim>256</dim>
+					<dim>7</dim>
+					<dim>7</dim>
+				</port>
+			</output>
+		</layer>
+		<layer id="33" name="depthwise_conv2d_10/depthwise" precision="FP32" type="Convolution">
+			<data dilations="1,1" group="256" kernel="3,3" output="256" pads_begin="1,1" pads_end="1,1" strides="1,1"/>
+			<input>
+				<port id="0">
+					<dim>1</dim>
+					<dim>256</dim>
+					<dim>7</dim>
+					<dim>7</dim>
+				</port>
+			</input>
+			<output>
+				<port id="3">
+					<dim>1</dim>
+					<dim>256</dim>
+					<dim>7</dim>
+					<dim>7</dim>
+				</port>
+			</output>
+			<blobs>
+				<weights offset="1371392" size="9216"/>
+				<biases offset="1380608" size="1024"/>
+			</blobs>
+		</layer>
+		<layer id="34" name="conv2d_11/Conv2D" precision="FP32" type="Convolution">
+			<data auto_pad="valid" dilations="1,1" group="1" kernel="1,1" output="512" pads_begin="0,0" pads_end="0,0" strides="1,1"/>
+			<input>
+				<port id="0">
+					<dim>1</dim>
+					<dim>256</dim>
+					<dim>7</dim>
+					<dim>7</dim>
+				</port>
+			</input>
+			<output>
+				<port id="3">
+					<dim>1</dim>
+					<dim>512</dim>
+					<dim>7</dim>
+					<dim>7</dim>
+				</port>
+			</output>
+			<blobs>
+				<weights offset="1381632" size="524288"/>
+				<biases offset="1905920" size="2048"/>
+			</blobs>
+		</layer>
+		<layer id="35" name="LeakyReLU_" precision="FP32" type="ReLU">
+			<data negative_slope="0.10000000149011612"/>
+			<input>
+				<port id="0">
+					<dim>1</dim>
+					<dim>512</dim>
+					<dim>7</dim>
+					<dim>7</dim>
+				</port>
+			</input>
+			<output>
+				<port id="1">
+					<dim>1</dim>
+					<dim>512</dim>
+					<dim>7</dim>
+					<dim>7</dim>
+				</port>
+			</output>
+		</layer>
+		<layer id="36" name="conv2d_12/Conv2D" precision="FP32" type="Convolution">
+			<data dilations="1,1" group="1" kernel="3,3" output="5" pads_begin="1,1" pads_end="1,1" strides="1,1"/>
+			<input>
+				<port id="0">
+					<dim>1</dim>
+					<dim>512</dim>
+					<dim>7</dim>
+					<dim>7</dim>
+				</port>
+			</input>
+			<output>
+				<port id="3">
+					<dim>1</dim>
+					<dim>5</dim>
+					<dim>7</dim>
+					<dim>7</dim>
+				</port>
+			</output>
+			<blobs>
+				<weights offset="1907968" size="92160"/>
+				<biases offset="2000128" size="20"/>
+			</blobs>
+		</layer>
+	</layers>
+	<edges>
+		<edge from-layer="0" from-port="0" to-layer="1" to-port="0"/>
+		<edge from-layer="1" from-port="3" to-layer="2" to-port="0"/>
+		<edge from-layer="2" from-port="1" to-layer="3" to-port="0"/>
+		<edge from-layer="3" from-port="3" to-layer="4" to-port="0"/>
+		<edge from-layer="4" from-port="3" to-layer="5" to-port="0"/>
+		<edge from-layer="5" from-port="1" to-layer="6" to-port="0"/>
+		<edge from-layer="6" from-port="3" to-layer="7" to-port="0"/>
+		<edge from-layer="7" from-port="3" to-layer="8" to-port="0"/>
+		<edge from-layer="8" from-port="1" to-layer="9" to-port="0"/>
+		<edge from-layer="9" from-port="3" to-layer="10" to-port="0"/>
+		<edge from-layer="10" from-port="3" to-layer="11" to-port="0"/>
+		<edge from-layer="11" from-port="1" to-layer="12" to-port="0"/>
+		<edge from-layer="12" from-port="3" to-layer="13" to-port="0"/>
+		<edge from-layer="13" from-port="3" to-layer="14" to-port="0"/>
+		<edge from-layer="14" from-port="1" to-layer="15" to-port="0"/>
+		<edge from-layer="15" from-port="3" to-layer="16" to-port="0"/>
+		<edge from-layer="16" from-port="3" to-layer="17" to-port="0"/>
+		<edge from-layer="17" from-port="1" to-layer="18" to-port="0"/>
+		<edge from-layer="18" from-port="3" to-layer="19" to-port="0"/>
+		<edge from-layer="19" from-port="3" to-layer="20" to-port="0"/>
+		<edge from-layer="20" from-port="1" to-layer="21" to-port="0"/>
+		<edge from-layer="21" from-port="3" to-layer="22" to-port="0"/>
+		<edge from-layer="22" from-port="3" to-layer="23" to-port="0"/>
+		<edge from-layer="23" from-port="1" to-layer="24" to-port="0"/>
+		<edge from-layer="24" from-port="3" to-layer="25" to-port="0"/>
+		<edge from-layer="25" from-port="3" to-layer="26" to-port="0"/>
+		<edge from-layer="26" from-port="1" to-layer="27" to-port="0"/>
+		<edge from-layer="27" from-port="3" to-layer="28" to-port="0"/>
+		<edge from-layer="28" from-port="3" to-layer="29" to-port="0"/>
+		<edge from-layer="29" from-port="1" to-layer="30" to-port="0"/>
+		<edge from-layer="30" from-port="3" to-layer="31" to-port="0"/>
+		<edge from-layer="31" from-port="3" to-layer="32" to-port="0"/>
+		<edge from-layer="32" from-port="1" to-layer="33" to-port="0"/>
+		<edge from-layer="33" from-port="3" to-layer="34" to-port="0"/>
+		<edge from-layer="34" from-port="3" to-layer="35" to-port="0"/>
+		<edge from-layer="35" from-port="1" to-layer="36" to-port="0"/>
+	</edges>
+	<meta_data>
+		<MO_version value="1.5.12.49d067a0"/>
+		<cli_parameters>
+			<data_type value="FP32"/>
+			<disable_fusing value="False"/>
+			<disable_gfusing value="False"/>
+			<disable_nhwc_to_nchw value="False"/>
+			<disable_resnet_optimization value="False"/>
+			<extensions value="DIR"/>
+			<framework value="tf"/>
+			<generate_deprecated_IR_V2 value="False"/>
+			<input_model value="DIR/frozen_model.pb"/>
+			<input_model_is_text value="False"/>
+			<input_shape value="[1,224,224,3]"/>
+			<log_level value="ERROR"/>
+			<mean_values value="()"/>
+			<move_to_preprocess value="False"/>
+			<offload_unsupported_operations_to_tf value="False"/>
+			<output_dir value="DIR"/>
+			<reverse_input_channels value="False"/>
+			<scale_values value="()"/>
+			<silent value="False"/>
+			<version value="False"/>
+			<unset unset_cli_parameters="batch, finegrain_fusing, freeze_placeholder_with_value, input, input_checkpoint, input_meta_graph, model_name, output, saved_model_dir, saved_model_tags, scale, tensorboard_logdir, tensorflow_custom_layer_libraries, tensorflow_custom_operations_config_update, tensorflow_object_detection_api_pipeline_config, tensorflow_operation_patterns, tensorflow_subgraph_patterns, tensorflow_use_custom_operations_config"/>
+		</cli_parameters>
+	</meta_data>
+</net>
