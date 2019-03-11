@@ -1,5 +1,5 @@
 # facedetection
-Face detection using YOLOv2 algorithm with openvino and tensorflow support
+Face detection using YOLOv2 algorithm with openvino and tensorflow support, multigrid inference (YOLOv3 support) will be added
 
 Bunch of models pretrained on WIDER Face dataset
 
