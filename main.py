@@ -100,8 +100,7 @@ if __name__ == "__main__":
         args = vars(parser.parse_args())
         if args['video'] is None:
             if args['video_descriptor'] is None:
-                print(error_prefix + one_of_video_descr_required)
-                exit(1)
+                raise ErrorSignal(one_of_video_descr_required)
             else:
                 try:
                     args['video'] = int(args['video_descriptor'])
