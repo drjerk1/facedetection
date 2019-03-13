@@ -1,4 +1,5 @@
 from errors import *
+from signals import *
 
 try:
     from tensorflow.python.keras.layers import Conv2D, Input, ZeroPadding2D
@@ -40,12 +41,12 @@ def create_model_tf(name, size, alpha):
     elif name == facedetection_openvino_supported_models[0]:
         model = create_tf_facedetection_mobilenetv2(size, alpha)
     else:
-        raise ValueError(unknown_model_error)
+        raise ErrorSignal(unknown_model_error)
     weights_path = tf_weights_prefix + name + "-size" + str(int(size)) + "-alpha" + str(float(alpha)) + ".h5"
     try:
         model.load_weights(weights_path)
     except IOError:
-        raise ValueError(unknown_model_error)
+        raise ErrorSignal(unknown_model_error)
     return model
 
 class FaceDetectionOpenVINOModel():
@@ -57,7 +58,7 @@ class FaceDetectionOpenVINOModel():
 
     def predict(self, batch, batch_size=None, verbose=None):
         if batch.shape[0] != self.num_shots:
-            raise ValueError(first_shape_mismatch)
+            raise ErrorSignal(first_shape_mismatch)
 
         batch = np.transpose(batch, (0, 3, 1, 2))
         infer = self.model.infer(inputs={self.input_name: batch})
@@ -75,26 +76,26 @@ def create_model_openvino(name, size, alpha, precision, device, num_shots, grids
         try:
             plugin = IEPlugin(device, plugin_dirs=None)
         except:
-            raise ValueError(openvino_error)
+            raise ErrorSignal(openvino_error)
 
         try:
             network = IENetwork.from_ir(model=xml_path, weights=weight_path)
         except IOError:
-            raise ValueError(unknown_model_error)
+            raise ErrorSignal(unknown_model_error)
         except:
-            raise ValueError(openvino_error)
+            raise ErrorSignal(openvino_error)
 
         try:
             input_name = next(iter(network.inputs))
             model = plugin.load(network=network)
         except:
-            raise ValueError(openvino_error)
+            raise ErrorSignal(openvino_error)
 
         del network
 
         return FaceDetectionOpenVINOModel(input_name, model, num_shots, grids)
     else:
-        raise ValueError(model_notsupported_by_openvino)
+        raise ErrorSignal(model_notsupported_by_openvino)
 
 def create_model(inferencer, name, size, alpha, precision, device, num_shots, grids):
     if inferencer == 'tensorflow':
@@ -102,4 +103,4 @@ def create_model(inferencer, name, size, alpha, precision, device, num_shots, gr
     elif inferencer == 'openvino':
         return create_model_openvino(name, size, alpha, precision, device, num_shots, grids)
     else:
-        raise ValueError(unknown_inferencer)
+        raise ErrorSignal(unknown_inferencer)

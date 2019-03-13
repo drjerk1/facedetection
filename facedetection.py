@@ -1,4 +1,5 @@
 from errors import *
+from signals import *
 from shots import shots
 from presets import presets
 from models import create_model
@@ -37,7 +38,7 @@ class FaceDetection():
                 loss = slice_h_shift * frame_h * 2
             else:
                 if slice_w_shift != 0 and slice_h_shift != 0:
-                    raise ValueError(math_is_wrong_error)
+                    raise ErrorSignal(math_is_wrong_error)
                 else:
                     loss = 0
             if (best_loss is None) or (loss < best_loss):
@@ -93,7 +94,7 @@ class FaceDetection():
             if not(self.inference_device is None):
                 self.inference_device = str(self.inference_device)
         except (ValueError, TypeError):
-            raise ValueError(invalid_argument_value)
+            raise ErrorSignal(invalid_argument_value)
 
         if self.inferencer is None:
             self.inferencer = default_inferencer
@@ -108,7 +109,7 @@ class FaceDetection():
                 if not(num_shots_hint is None):
                     num_shots_hint = int(num_shots_hint)
             except (ValueError, TypeError):
-                raise ValueError(invalid_argument_value)
+                raise ErrorSignal(invalid_argument_value)
             self.shot_name = self.autodetect_shotname(frame_w, frame_h, num_shots_hint)
         if (self.preset_name is None) and (self.prob_threshold is None):
             self.prob_threshold = default_prob_threshold
@@ -128,11 +129,11 @@ class FaceDetection():
             if self.iou_threshold is None:
                 self.iou_threshold = presets[self.preset_name]["iou_threshold"]
         except KeyError:
-            raise ValueError(invalid_preset_name)
+            raise ErrorSignal(invalid_preset_name)
         try:
             self.shots = shots[self.shot_name]
         except KeyError:
-            raise ValueError(invalid_shot_name)
+            raise ErrorSignal(invalid_shot_name)
 
         self.grids = self.image_size // reduction_rate
         self.model = create_model(self.inferencer, self.model_name, self.image_size, self.model_alpha, self.model_precision, self.inference_device, len(self.shots['shots']), self.grids)
@@ -150,7 +151,7 @@ class FaceDetection():
             frame = frame[slice_h_shift:-slice_h_shift, :]
         else:
             if slice_w_shift != 0 and slice_h_shift != 0:
-                raise ValueError(math_is_wrong_error)
+                raise ErrorSignal(math_is_wrong_error)
 
         frames = []
         for s in self.shots["shots"]:
@@ -220,4 +221,4 @@ class FaceDetection():
             boxes[i][2] += slice_w_shift / original_frame_shape[1]
             boxes[i][3] += slice_h_shift / original_frame_shape[0]
 
-        return boxes
+        return list(boxes)

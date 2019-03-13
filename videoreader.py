@@ -1,5 +1,6 @@
 import cv2
 from errors import *
+from signals import *
 
 cv2_width_magic = cv2.CAP_PROP_FRAME_WIDTH
 cv2_height_magic = cv2.CAP_PROP_FRAME_HEIGHT
@@ -12,14 +13,14 @@ class VideoReader():
             try:
                 self.capture.set(cv2_width_magic, int(width))
             except (ValueError, TypeError):
-                raise ValueError(invalid_argument_value)
+                raise ErrorSignal(invalid_argument_value)
             except:
                 pass
         if not(height is None):
             try:
                 self.capture.set(cv2_height_magic, int(height))
             except (ValueError, TypeError):
-                raise ValueError(invalid_argument_value)
+                raise ErrorSignal(invalid_argument_value)
             except:
                 pass
         self.width = int(self.capture.get(cv2_width_magic))
