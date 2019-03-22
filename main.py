@@ -1,4 +1,6 @@
 from facedetection import FaceDetection
+from genderestimation import GenderEstimation
+from emotionsrecognision import EmotionsRecognision
 from videoreader import VideoReader
 from errors import *
 from signals import *
@@ -13,7 +15,7 @@ height_hint = 1080
 error_prefix = "Error: "
 default_mode = "byframe"
 
-def main(video, json_logger=None, visualise_callback=False, mode=None, inferencer=None, model_name=None, image_size=None, model_alpha=None, shot_name=None, preset_name=None, prob_threshold=None, iou_threshold=None, union_threshold=None, model_precision=None, inference_device=None, num_shots_hint=None, video_descriptor=None):
+def main(video, json_logger=None, visualise_callback=False, mode=None, inferencer=None, model_name=None, image_size=None, model_alpha=None, shot_name=None, preset_name=None, prob_threshold=None, iou_threshold=None, union_threshold=None, model_precision=None, inference_device=None, num_shots_hint=None, video_descriptor=None, gender_estimation=False, emotions_recognision=False):
     if not(mode is None):
         try:
             mode = str(mode)
@@ -32,6 +34,10 @@ def main(video, json_logger=None, visualise_callback=False, mode=None, inference
 
     reader = VideoReader(video, width_hint, height_hint)
     detector = FaceDetection(reader.get_width(), reader.get_height(), inferencer=inferencer, model_name=model_name, image_size=image_size, model_alpha=model_alpha, shot_name=shot_name, preset_name=preset_name, prob_threshold=prob_threshold, iou_threshold=iou_threshold, union_threshold=union_threshold, model_precision=model_precision, inference_device=inference_device, num_shots_hint=num_shots_hint)
+    if gender_estimation:
+        gender_estimatior = GenderEstimation(reader.get_width(), reader.get_height(), inferencer=inferencer)
+    if emotions_recognision:
+        emotions_recogniser = EmotionsRecognision(reader.get_width(), reader.get_height(), inferencer=inferencer)
     callbacks = []
 
     if visualise_callback:
@@ -50,10 +56,16 @@ def main(video, json_logger=None, visualise_callback=False, mode=None, inference
             while True:
                 frame = reader.read()
                 boxes = detector.detect(frame)
+                genders = None
+                emotions=None
+                if gender_estimation:
+                    genders = gender_estimatior.estimate(frame, boxes)
+                if emotions_recognision:
+                    emotions = emotions_recogniser.recognise(frame, boxes)
                 frame_number += 1
                 for callback in callbacks:
                     try:
-                        callback.call(video=video, frame=frame, boxes=boxes, frame_number=frame_number)
+                        callback.call(video=video, frame=frame, boxes=boxes, frame_number=frame_number, genders=genders, emotions=emotions)
                     except QuitSignal as ret:
                         exit_code = int(ret)
                         break
@@ -96,6 +108,8 @@ if __name__ == "__main__":
         parser.add_argument('-p','--model_precision', help='Model precision', default=None, dest='model_precision')
         parser.add_argument('-d','--inference-device', help='Inference device', default=None, dest='inference_device')
         parser.add_argument('-k','--num-shots', help='Hint for automatic shot scheme detector', default=None, dest='num_shots_hint')
+        parser.add_argument('-g', '--gender-estimation', help='Perform gender estimation', action='store_true', default=False, dest='gender_estimation')
+        parser.add_argument('-e', '--emotions-recognision', help='Perform emotions recognision', action='store_true', default=False, dest='emotions_recognision')
 
         args = vars(parser.parse_args())
         if args['video'] is None:

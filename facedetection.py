@@ -9,6 +9,7 @@ from useful import r, sigmoid
 import cv2
 import numpy as np
 import math
+from glob_const import *
 
 default_inferencer = "tensorflow"
 default_model_name = "facedetection-mobilenetv2"
@@ -66,6 +67,8 @@ class FaceDetection():
             self.model_name = model_name
             if not(self.model_name is None):
                 self.model_name = str(self.model_name)
+                if self.model_name.split('-')[0] != facedetection_prefix:
+                    raise ErrorSignal(not_valid_model_name)
             self.image_size = image_size
             if not(self.image_size is None):
                 self.image_size = int(self.image_size)
@@ -155,10 +158,10 @@ class FaceDetection():
 
         frames = []
         for s in self.shots["shots"]:
-            frames.append(cv2.resize(frame[r(s[1] * frame.shape[0]):r((s[1] + s[3]) * frame.shape[0]), r(s[0] * frame.shape[1]):r((s[0] + s[2]) * frame.shape[1])], (self.image_size, self.image_size)))
+            frames.append(cv2.resize(frame[r(s[1] * frame.shape[0]):r((s[1] + s[3]) * frame.shape[0]), r(s[0] * frame.shape[1]):r((s[0] + s[2]) * frame.shape[1])], (self.image_size, self.image_size), interpolation=cv2.INTER_NEAREST))
         frames = np.array(frames)
 
-        predictions = self.model.predict(frames, batch_size=len(frames), verbose=0)
+        predictions = self.model.predict(frames, batch_size=min(len(frames), batch_size), verbose=0)
 
         boxes = []
         prob = []
