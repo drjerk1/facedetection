@@ -138,4 +138,4 @@ class EmotionsRecognision():
         else:
             predictions = []
 
-        return predictions
+        return np.array(predictions)

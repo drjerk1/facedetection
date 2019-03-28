@@ -17,6 +17,8 @@ gender_female_text = "W"
 emotion_text_offset_y = -5
 emotion_text_offset_x = 100
 emotion_text_color = (0, 0, 0)
+names_text_offset_x = 0
+names_text_offset_y = 20
 
 class Visualiser():
     def __init__(self, frame_w, frame_h):
@@ -28,6 +30,8 @@ class Visualiser():
         video = args['video']
         genders = args['genders']
         emotions = args['emotions']
+        faceid_feautures = args['faceid_feautures']
+        names = args['names']
         for i in range(len(boxes)):
             lx = r(boxes[i][0] * self.frame_w)
             ly = r(boxes[i][1] * self.frame_h)
@@ -48,6 +52,8 @@ class Visualiser():
                 emotion = emotions[i].argmax()
                 emotion_name = emotion_names[emotion]
                 cv2.putText(frame, emotion_name, (lx + emotion_text_offset_x, ly + emotion_text_offset_y), cv2.FONT_HERSHEY_SIMPLEX, 1, emotion_text_color, 2, cv2.LINE_AA)
+            if not(names is None) and len(names[i]) > 0:
+                cv2.putText(frame, names[i][0], (lx + names_text_offset_x, ry + names_text_offset_y), cv2.FONT_HERSHEY_SIMPLEX, 1, emotion_text_color, 2, cv2.LINE_AA)
         cv2.imshow(str(window_prefix + str(video)), cv2.cvtColor(frame, cv2.COLOR_RGB2BGR))
         if cv2.waitKey(1) & 0xFF == ord(quit_button):
             raise QuitSignal(0)

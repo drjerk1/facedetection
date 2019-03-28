@@ -3,12 +3,13 @@ from signals import *
 from glob_const import *
 
 try:
-    from tensorflow.python.keras.layers import Conv2D, Input, ZeroPadding2D, Dense
+    from tensorflow.python.keras.layers import Conv2D, Input, ZeroPadding2D, Dense, Lambda
     from tensorflow.python.keras.models import Model
     from fdmobilenet import FDMobileNet
     from facemobilenet import FaceMobileNet
     from resnet18 import ResNet18SI
     from tensorflow.python.keras.applications.mobilenet_v2 import MobileNetV2
+    import tensorflow as tf
 except ImportError:
     pass
 try:
@@ -20,7 +21,7 @@ import numpy as np
 
 tf_weights_prefix = "tf_weights/"
 openvino_prefix = "openvino_models/"
-supported_models = ( "facedetection-mobilenetv2", "facedetection-fdmobilenet", "genderestimation-facemobilenet", "emotionsrecognision-resnet18" )
+supported_models = ( "facedetection-mobilenetv2", "facedetection-fdmobilenet", "genderestimation-facemobilenet", "emotionsrecognision-resnet18", "faceid-facemobilenet" )
 
 def create_tf_facedetection_fdmobilenet(size, alpha):
     input_tensor = Input(shape=(size, size, 3))
@@ -52,6 +53,14 @@ def create_tf_genderestimation_facemobilenet(size, alpha):
 
     return Model(inputs=input_tensor, outputs=output_tensor)
 
+def create_tf_faceid_facemobilenet(size, alpha):
+    input_tensor = Input(shape=(size, size, 3))
+    output_tensor = FaceMobileNet(input_tensor, alpha=alpha)
+    output_tensor = Dense(128, use_bias=False)(output_tensor)
+    output_tensor = Lambda(lambda x: tf.math.l2_normalize(x, axis=-1))(output_tensor)
+
+    return Model(inputs=input_tensor, outputs=output_tensor)
+
 def create_model_tf(name, size, alpha):
     if name == supported_models[1]:
         model = create_tf_facedetection_fdmobilenet(size, alpha)
@@ -61,6 +70,8 @@ def create_model_tf(name, size, alpha):
         model = create_tf_genderestimation_facemobilenet(size, alpha)
     elif name == supported_models[3]:
         model = create_tf_emotionsrecognision_resnet18(size, alpha)
+    elif name == supported_models[4]:
+        model = create_tf_faceid_facemobilenet(size, alpha)
     else:
         raise ErrorSignal(unknown_model_error)
     weights_path = tf_weights_prefix + name + "-size" + str(int(size)) + "-alpha" + str(float(alpha)) + ".h5"
@@ -123,6 +134,23 @@ class EmotionsRecognisionOpenVINOModel():
         predictions = np.array(predictions)
         return predictions
 
+class FaceIDOpenVINOModel():
+    def __init__(self, input_name, model, num_shots=None, grids=None):
+        self.input_name = input_name
+        self.model = model
+
+    def predict(self, batch, batch_size=None, verbose=None):
+        batch = np.transpose(batch, (0, 3, 1, 2))
+        predictions = []
+
+        for i in range(batch.shape[0]):
+            infer = self.model.infer(inputs={self.input_name: np.array([batch[i]])})
+            prediction = infer[list(infer.keys())[0]][0].reshape((128,))
+            predictions.append(prediction)
+
+        predictions = np.array(predictions)
+        return predictions
+
 def create_model_openvino(name, size, alpha, precision, device, num_shots, grids):
     if name in supported_models:
         weight_path = openvino_prefix + name + "-size" + str(int(size)) + "-alpha" + str(float(alpha)) + "-fp" + str(int(precision)) + "-ns" + str(int(num_shots)) + ".bin"
@@ -154,6 +182,8 @@ def create_model_openvino(name, size, alpha, precision, device, num_shots, grids
             return GenderEstimationOpenVINOModel(input_name, model, num_shots, grids)
         if name.split('-')[0] == emotionsrecognision_prefix:
             return EmotionsRecognisionOpenVINOModel(input_name, model, num_shots, grids)
+        if name.split('-')[0] == faceid_prefix:
+            return FaceIDOpenVINOModel(input_name, model, num_shots, grids)
     else:
         raise ErrorSignal(model_notsupported_by_openvino)
 
